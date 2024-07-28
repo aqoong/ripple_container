@@ -1,0 +1,19 @@
+name: ripple_container
+description: "RippleContainer provides a versatile Box widget that can apply a ripple effect in Flutter applications. This package offers various customization options to help you create attractive and dynamic UIs. Enhance your app’s user experience with RippleContainer."
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: '>=3.4.1 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
