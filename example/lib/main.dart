@@ -32,7 +32,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,16 +43,43 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 200,
               height: 100,
               backgroundColor: Colors.blueAccent,
-              child: Text('Hi'),
+              margin: const EdgeInsets.all(10),
+              borderRadius: BorderRadius.circular(30),
+              splashColor: Colors.amber,
+              border: const Border.fromBorderSide(BorderSide(color: Colors.grey)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  offset: const Offset(0, 2),
+                  blurRadius: 10,
+                )
+              ],
+              onTap: () => tapTest('Button OnTap'),
+              onLongPress: () => tapTest('Button OnLongPress'),
+              child: const Text('Hi'),
             ),
             Container(
               width: 200,
               height: 100,
-              child: Text('Hi'),
+              decoration: const BoxDecoration(
+                  border: Border.fromBorderSide(BorderSide(color: Colors.red))),
+              child: const Text('Hi'),
             )
           ],
         ),
       ),
     );
   }
+
+  void tapTest(String testMessage) =>
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            testMessage,
+            style: TextStyle(color: Colors.white),
+          ),
+          duration: Duration(seconds: 1),
+          showCloseIcon: true,
+        ),
+      );
 }
