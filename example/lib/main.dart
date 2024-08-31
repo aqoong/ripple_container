@@ -46,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
               margin: const EdgeInsets.all(10),
               borderRadius: BorderRadius.circular(30),
               splashColor: Colors.amber,
+              // gradient: LinearGradient(colors: [Colors.red, Colors.yellow]),
               border: const Border.fromBorderSide(BorderSide(color: Colors.grey)),
               boxShadow: [
                 BoxShadow(

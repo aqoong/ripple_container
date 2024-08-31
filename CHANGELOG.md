@@ -25,3 +25,8 @@ const RippleContainer({
     this.onLongPress,
   });
 ```
+
+## 0.1.2
+
+* Expand supported SDK versions
+* Fix the problem that the color does not apply if the "BackgroundColor" value is not set and "Gradient" is set

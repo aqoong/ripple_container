@@ -38,9 +38,9 @@ RippleContainer(
 <table style="border-collapse: collapse;border: 1px solid #dddddd;">
     <tr>
         <td>
-            <img alt="" src="https://aqoong.github.io/readme-assets/ripple_container/example_img_RippleContainer.png" width="350"/>
+            <img alt="" src="https://aqoong.github.io/readme-assets/ripple_container/example_img_RippleContainer.png"/>
         </td>
-        <td>
+        <td width="50%">
             <pre><code>
 RippleContainer(
 	width: 200,
@@ -65,9 +65,9 @@ RippleContainer(
     </tr>
     <tr>
         <td>
-            <img alt="" src="https://aqoong.github.io/readme-assets/ripple_container/example_img_Container.png" width="350"/>
+            <img alt="" src="https://aqoong.github.io/readme-assets/ripple_container/example_img_Container.png"/>
         </td>
-        <td>
+        <td width="50%">
             <pre><code>
 Container(
               width: 200,

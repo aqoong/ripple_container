@@ -18,8 +18,7 @@ class RippleContainer extends StatelessWidget {
 
   /// [backgroundColor]
   /// Sets the background color of the RippleContainer.
-  /// If null is entered, transparent color is the default.
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final BlendMode? backgroundBlendMode;
 
   final Gradient? gradient;
@@ -74,7 +73,7 @@ class RippleContainer extends StatelessWidget {
     required this.child,
     this.width,
     this.height,
-    this.backgroundColor = Colors.transparent,
+    this.backgroundColor,
     this.borderRadius = BorderRadius.zero,
     this.padding = EdgeInsets.zero,
     this.margin = EdgeInsets.zero,
