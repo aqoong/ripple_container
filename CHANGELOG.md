@@ -27,6 +27,8 @@ const RippleContainer({
 ```
 
 ## 0.1.2
-
 * Expand supported SDK versions
 * Fix the problem that the color does not apply if the "BackgroundColor" value is not set and "Gradient" is set
+
+## 1.0.0
+* Created a ContainerDecoration class to separate the decoration functionality. This is to allow for the extended use of the RippleContainer widget.
