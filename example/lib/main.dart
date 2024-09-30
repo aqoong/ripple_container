@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ripple_container/container_decoration.dart';
 import 'package:ripple_container/ripple_container.dart';
 
 void main() {
@@ -47,7 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
               borderRadius: BorderRadius.circular(30),
               splashColor: Colors.amber,
               // gradient: LinearGradient(colors: [Colors.red, Colors.yellow]),
-              border: const Border.fromBorderSide(BorderSide(color: Colors.grey)),
+              border:
+                  const Border.fromBorderSide(BorderSide(color: Colors.grey)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.5),
