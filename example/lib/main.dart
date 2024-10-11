@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ripple_container/container_decoration.dart';
 import 'package:ripple_container/ripple_container.dart';
 
 void main() {
@@ -43,20 +42,22 @@ class _MyHomePageState extends State<MyHomePage> {
             RippleContainer(
               width: 200,
               height: 100,
-              backgroundColor: Colors.blueAccent,
-              margin: const EdgeInsets.all(10),
-              borderRadius: BorderRadius.circular(30),
-              splashColor: Colors.amber,
-              // gradient: LinearGradient(colors: [Colors.red, Colors.yellow]),
-              border:
-                  const Border.fromBorderSide(BorderSide(color: Colors.grey)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
-                  offset: const Offset(0, 2),
-                  blurRadius: 10,
-                )
-              ],
+              decoration: ContainerDecoration(
+                backgroundColor: Colors.blueAccent,
+                margin: const EdgeInsets.all(10),
+                borderRadius: BorderRadius.circular(30),
+                splashColor: Colors.amber,
+                // gradient: LinearGradient(colors: [Colors.red, Colors.yellow]),
+                border:
+                    const Border.fromBorderSide(BorderSide(color: Colors.grey)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.5),
+                    offset: const Offset(0, 2),
+                    blurRadius: 10,
+                  )
+                ],
+              ),
               onTap: () => tapTest('Button OnTap'),
               onLongPress: () => tapTest('Button OnLongPress'),
               child: const Text('Hi'),

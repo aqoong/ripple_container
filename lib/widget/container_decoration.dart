@@ -4,13 +4,7 @@
 
 import 'package:flutter/material.dart';
 
-abstract class ContainerDecoration extends StatelessWidget {
-  /// [width], [height]
-  /// Sets the size of the RippleContainer.
-  /// If null is entered, match the size of the child.
-  final double? width;
-  final double? height;
-
+class ContainerDecoration {
   /// [backgroundColor]
   /// Sets the background color of the RippleContainer.
   final Color? backgroundColor;
@@ -58,9 +52,6 @@ abstract class ContainerDecoration extends StatelessWidget {
   final Color? splashColor;
 
   const ContainerDecoration({
-    super.key,
-    this.width,
-    this.height,
     this.backgroundColor,
     this.borderRadius = BorderRadius.zero,
     this.padding = EdgeInsets.zero,

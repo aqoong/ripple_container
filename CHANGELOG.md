@@ -32,3 +32,6 @@ const RippleContainer({
 
 ## 1.0.0
 * Created a ContainerDecoration class to separate the decoration functionality. This is to allow for the extended use of the RippleContainer widget.
+
+## 1.0.1
+* The ContainerDecoration has been completely separated as nullable data. If it’s null, it behaves like a Container that supports tap actions.
