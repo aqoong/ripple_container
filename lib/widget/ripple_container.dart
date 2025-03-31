@@ -25,15 +25,17 @@ class RippleContainer extends StatelessWidget {
   /// If both variables are null, there will be no splash effect.
   final Function()? onTap;
   final Function()? onLongPress;
+  final Function()? onDragEnd;
 
   const RippleContainer({
-    super.key,
     required this.child,
     this.width,
     this.height,
     this.decoration,
     this.onTap,
     this.onLongPress,
+    this.onDragEnd,
+    super.key,
   });
 
   @override
@@ -52,18 +54,36 @@ class RippleContainer extends StatelessWidget {
         borderRadius: decoration?.borderRadius ?? BorderRadius.zero,
         child: Material(
           color: Colors.transparent,
-          child: InkWell(
-            splashFactory: decoration?.splashFactory,
-            splashColor: decoration?.splashColor,
-            borderRadius: decoration?.borderRadius,
-            onTap: onTap,
-            onLongPress: onLongPress,
-            child: Container(
-              width: width,
-              height: height,
-              padding: decoration?.padding,
-              alignment: Alignment.center,
-              child: child,
+          child: GestureDetector(
+            onPanEnd: onDragEnd != null
+                ? (details) {
+                    final RenderBox box =
+                        context.findRenderObject() as RenderBox;
+                    final localPosition =
+                        box.globalToLocal(details.globalPosition);
+                    final size = box.size;
+
+                    if (localPosition.dx >= 0 &&
+                        localPosition.dx <= size.width &&
+                        localPosition.dy >= 0 &&
+                        localPosition.dy <= size.height) {
+                      onDragEnd!();
+                    }
+                  }
+                : null,
+            child: InkWell(
+              splashFactory: decoration?.splashFactory,
+              splashColor: decoration?.splashColor,
+              borderRadius: decoration?.borderRadius,
+              onTap: onTap,
+              onLongPress: onLongPress,
+              child: Container(
+                width: width,
+                height: height,
+                padding: decoration?.padding,
+                alignment: Alignment.center,
+                child: child,
+              ),
             ),
           ),
         ),

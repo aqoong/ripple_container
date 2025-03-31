@@ -60,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onTap: () => tapTest('Button OnTap'),
               onLongPress: () => tapTest('Button OnLongPress'),
+              onDragEnd: () => tapTest('Button onDragEnd'),
               child: const Text('Hi'),
             ),
             Container(
