@@ -35,3 +35,7 @@ const RippleContainer({
 
 ## 1.0.1
 * The ContainerDecoration has been completely separated as nullable data. If it’s null, it behaves like a Container that supports tap actions.
+
+## 1.1.0
+* RippleContainer now supports onTap, onLongPress, and onDragEnd.
+* Added onDragEnd callback to handle drag gestures ending within the widget's boundaries.
