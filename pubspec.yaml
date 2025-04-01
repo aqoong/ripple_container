@@ -13,6 +13,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  aqlinter: ^2.1.0
+  flutter_lints: ^3.0.0
 
 license: MIT
