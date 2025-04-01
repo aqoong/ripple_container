@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
-  aqlinter: any
+  flutter_test:
+    sdk: flutter
+  aqlinter: ^2.1.0
 
 license: MIT
