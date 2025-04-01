@@ -4,9 +4,9 @@
 
 import 'package:flutter/material.dart';
 
-import 'container_decoration.dart';
+import 'package:ripple_container/widget/container_decoration.dart';
 
-class RippleContainer extends StatelessWidget {
+class RippleContainer extends StatefulWidget {
   /// [child] is required parameter.
   ///specify the widget to be displayed within the RippleContainer.
   final Widget child;
@@ -39,50 +39,61 @@ class RippleContainer extends StatelessWidget {
   });
 
   @override
+  State<RippleContainer> createState() => _RippleContainerState();
+}
+
+class _RippleContainerState extends State<RippleContainer> {
+  Offset? _dragPosition;
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      margin: decoration?.margin,
+      margin: widget.decoration?.margin,
       decoration: BoxDecoration(
-        color: decoration?.backgroundColor,
-        borderRadius: decoration?.borderRadius,
-        boxShadow: decoration?.boxShadow,
-        backgroundBlendMode: decoration?.backgroundBlendMode,
-        border: decoration?.border,
-        gradient: decoration?.gradient,
+        color: widget.decoration?.backgroundColor,
+        borderRadius: widget.decoration?.borderRadius,
+        boxShadow: widget.decoration?.boxShadow,
+        backgroundBlendMode: widget.decoration?.backgroundBlendMode,
+        border: widget.decoration?.border,
+        gradient: widget.decoration?.gradient,
       ),
       child: ClipRRect(
-        borderRadius: decoration?.borderRadius ?? BorderRadius.zero,
+        borderRadius: widget.decoration?.borderRadius ?? BorderRadius.zero,
         child: Material(
           color: Colors.transparent,
           child: GestureDetector(
-            onPanEnd: onDragEnd != null
+            onPanUpdate: (details) {
+              final RenderBox box = context.findRenderObject() as RenderBox;
+              _dragPosition = box.globalToLocal(details.globalPosition);
+            },
+            onPanEnd: widget.onDragEnd != null
                 ? (details) {
-                    final RenderBox box =
-                        context.findRenderObject() as RenderBox;
-                    final localPosition =
-                        box.globalToLocal(details.globalPosition);
-                    final size = box.size;
+                    if (_dragPosition != null) {
+                      final RenderBox box =
+                          context.findRenderObject() as RenderBox;
+                      final size = box.size;
 
-                    if (localPosition.dx >= 0 &&
-                        localPosition.dx <= size.width &&
-                        localPosition.dy >= 0 &&
-                        localPosition.dy <= size.height) {
-                      onDragEnd!();
+                      if (_dragPosition!.dx >= 0 &&
+                          _dragPosition!.dx <= size.width &&
+                          _dragPosition!.dy >= 0 &&
+                          _dragPosition!.dy <= size.height) {
+                        widget.onDragEnd!();
+                      }
                     }
                   }
                 : null,
             child: InkWell(
-              splashFactory: decoration?.splashFactory,
-              splashColor: decoration?.splashColor,
-              borderRadius: decoration?.borderRadius,
-              onTap: onTap,
-              onLongPress: onLongPress,
+              splashFactory: widget.decoration?.splashFactory,
+              splashColor: widget.decoration?.splashColor,
+              borderRadius: widget.decoration?.borderRadius,
+              onTap: widget.onTap,
+              onLongPress: widget.onLongPress,
               child: Container(
-                width: width,
-                height: height,
-                padding: decoration?.padding,
+                width: widget.width,
+                height: widget.height,
+                padding: widget.decoration?.padding,
                 alignment: Alignment.center,
-                child: child,
+                child: widget.child,
               ),
             ),
           ),
