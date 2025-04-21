@@ -58,9 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
                 ],
               ),
-              onTap: () => tapTest('Button OnTap'),
-              onLongPress: () => tapTest('Button OnLongPress'),
-              onDragEnd: () => tapTest('Button onDragEnd'),
+              rippleCallbacks: RippleCallbacks(
+                onTap: () => tapTest('Button OnTap'),
+                onLongPress: () => tapTest('Button OnLongPress'),
+                onDragEnd: (_) => tapTest('Button onDragEnd'),
+                onDoubleTap: () => tapTest('Button onDoubleTap'),
+                onLongPressCancel: () => tapTest('Button onLongPressCancel'),
+              ),
               child: const Text('Hi'),
             ),
             Container(
@@ -81,9 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
         SnackBar(
           content: Text(
             testMessage,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
-          duration: Duration(seconds: 1),
+          duration: const Duration(milliseconds: 300),
           showCloseIcon: true,
         ),
       );

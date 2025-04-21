@@ -39,3 +39,7 @@ const RippleContainer({
 ## 1.1.0
 * RippleContainer now supports onTap, onLongPress, and onDragEnd.
 * Added onDragEnd callback to handle drag gestures ending within the widget's boundaries.
+
+## 1.2.0
+- Introduced `RippleCallbacks` class to encapsulate gesture callbacks for `RippleContainer`.
+- Enhanced `RippleContainer` to support comprehensive gesture interactions via `RippleCallbacks`.

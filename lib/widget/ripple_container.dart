@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:ripple_container/widget/container_decoration.dart';
+import 'package:ripple_container/widget/ripple_callbacks.dart';
 
 class RippleContainer extends StatefulWidget {
   /// [child] is required parameter.
@@ -21,20 +22,14 @@ class RippleContainer extends StatefulWidget {
   /// If null is provided, it behaves like a Container Widget that supports onTap and onLongPress actions.
   final ContainerDecoration? decoration;
 
-  /// The [onTap] and [onLongPress] variables are used to define the actions when this widget is selected.
-  /// If both variables are null, there will be no splash effect.
-  final Function()? onTap;
-  final Function()? onLongPress;
-  final Function()? onDragEnd;
+  final RippleCallbacks? rippleCallbacks;
 
   const RippleContainer({
     required this.child,
     this.width,
     this.height,
     this.decoration,
-    this.onTap,
-    this.onLongPress,
-    this.onDragEnd,
+    this.rippleCallbacks,
     super.key,
   });
 
@@ -62,11 +57,18 @@ class _RippleContainerState extends State<RippleContainer> {
         child: Material(
           color: Colors.transparent,
           child: GestureDetector(
+            onLongPressCancel: widget.rippleCallbacks?.onLongPressCancel,
+            onLongPressDown: widget.rippleCallbacks?.onLongPressDown,
+            onLongPressUp: widget.rippleCallbacks?.onLongPressUp,
+            onPanStart: widget.rippleCallbacks?.onDragStart,
             onPanUpdate: (details) {
               final RenderBox box = context.findRenderObject() as RenderBox;
               _dragPosition = box.globalToLocal(details.globalPosition);
+              if (widget.rippleCallbacks?.onDragUpdate != null) {
+                widget.rippleCallbacks?.onDragUpdate!(details);
+              }
             },
-            onPanEnd: widget.onDragEnd != null
+            onPanEnd: widget.rippleCallbacks?.onDragEnd != null
                 ? (details) {
                     if (_dragPosition != null) {
                       final RenderBox box =
@@ -77,17 +79,22 @@ class _RippleContainerState extends State<RippleContainer> {
                           _dragPosition!.dx <= size.width &&
                           _dragPosition!.dy >= 0 &&
                           _dragPosition!.dy <= size.height) {
-                        widget.onDragEnd!();
+                        widget.rippleCallbacks?.onDragEnd!(details);
                       }
                     }
                   }
                 : null,
+            onPanCancel: widget.rippleCallbacks?.onDragCancel,
             child: InkWell(
               splashFactory: widget.decoration?.splashFactory,
               splashColor: widget.decoration?.splashColor,
               borderRadius: widget.decoration?.borderRadius,
-              onTap: widget.onTap,
-              onLongPress: widget.onLongPress,
+              onTap: widget.rippleCallbacks?.onTap,
+              onTapDown: widget.rippleCallbacks?.onTapDown,
+              onTapUp: widget.rippleCallbacks?.onTapUp,
+              onTapCancel: widget.rippleCallbacks?.onTapCancel,
+              onLongPress: widget.rippleCallbacks?.onLongPress,
+              onDoubleTap: widget.rippleCallbacks?.onDoubleTap,
               child: Container(
                 width: widget.width,
                 height: widget.height,
