@@ -5,3 +5,4 @@ library ripple_container;
 
 export 'widget/container_decoration.dart';
 export 'widget/ripple_container.dart';
+export 'widget/ripple_callbacks.dart';
