@@ -11,27 +11,35 @@ Key Features:
 
 ## How to Use
 
-```
+Decoration은 `ContainerDecoration`, 제스처는 `RippleCallbacks`로 전달합니다. Container처럼 `width`/`height`/`child`와 함께 사용할 수 있습니다.
+
+```dart
 RippleContainer(
-	width: 200,
-	height: 100,
-	backgroundColor: Colors.blueAccent,
-	margin: const EdgeInsets.all(10),
-	borderRadius: BorderRadius.circular(30),
-	splashColor: Colors.amber,
-	border: const Border.fromBorderSide(BorderSide(color: Colors.grey)),
-	boxShadow: [
-		BoxShadow(
-			color: Colors.black.withOpacity(0.5),
-			offset: const Offset(0, 2),
-			blurRadius: 10,
-		)
-	],
-	onTap: () => tapTest('Button OnTap'),
-	onLongPress: () => tapTest('Button OnLongPress'),
-	child: const Text('Hi'),
+  width: 200,
+  height: 100,
+  decoration: ContainerDecoration(
+    backgroundColor: Colors.blueAccent,
+    margin: const EdgeInsets.all(10),
+    borderRadius: BorderRadius.circular(30),
+    splashColor: Colors.amber,
+    border: const Border.fromBorderSide(BorderSide(color: Colors.grey)),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.5),
+        offset: const Offset(0, 2),
+        blurRadius: 10,
+      )
+    ],
+  ),
+  rippleCallbacks: RippleCallbacks(
+    onTap: () => tapTest('Button OnTap'),
+    onLongPress: () => tapTest('Button OnLongPress'),
+  ),
+  child: const Text('Hi'),
 )
 ```
+
+제스처가 필요 없으면 `rippleCallbacks`를 생략하면 됩니다. 터치 시 ripple 효과만 보이고 콜백은 호출되지 않습니다.
 
 ## Example
 
@@ -43,23 +51,21 @@ RippleContainer(
         <td width="50%">
             <pre><code>
 RippleContainer(
-	width: 200,
-	height: 100,
-	backgroundColor: Colors.blueAccent,
-	margin: const EdgeInsets.all(10),
-	borderRadius: BorderRadius.circular(30),
-	splashColor: Colors.amber,
-	border: const Border.fromBorderSide(BorderSide(color: Colors.grey)),
-	boxShadow: [
-		BoxShadow(
-			color: Colors.black.withOpacity(0.5),
-			offset: const Offset(0, 2),
-			blurRadius: 10,
-		)
-	],
-	onTap: () => tapTest('Button OnTap'),
-	onLongPress: () => tapTest('Button OnLongPress'),
-	child: const Text('Hi'),
+  width: 200,
+  height: 100,
+  decoration: ContainerDecoration(
+    backgroundColor: Colors.blueAccent,
+    margin: const EdgeInsets.all(10),
+    borderRadius: BorderRadius.circular(30),
+    splashColor: Colors.amber,
+    border: const Border.fromBorderSide(BorderSide(color: Colors.grey)),
+    boxShadow: [...],
+  ),
+  rippleCallbacks: RippleCallbacks(
+    onTap: () => tapTest('Button OnTap'),
+    onLongPress: () => tapTest('Button OnLongPress'),
+  ),
+  child: const Text('Hi'),
 )</code></pre>
         </td>
     </tr>
