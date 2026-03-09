@@ -3,7 +3,6 @@
  */
 
 import 'package:flutter/material.dart';
-
 import 'package:ripple_container/widget/container_decoration.dart';
 import 'package:ripple_container/widget/ripple_callbacks.dart';
 
@@ -40,6 +39,30 @@ class RippleContainer extends StatefulWidget {
 class _RippleContainerState extends State<RippleContainer> {
   Offset? _dragPosition;
 
+  /// LongPress 발생 후 같은 포인터가 올라갔을 때 Cancel을 즉시 호출하기 위한 상태
+  bool _longPressFired = false;
+  int? _activePointer;
+  bool _didCallLongPressCancelOnPointerUp = false;
+
+  void _onPointerDown(PointerDownEvent event) {
+    if (!_longPressFired) {
+      _activePointer = event.pointer;
+    }
+  }
+
+  void _onPointerUp(PointerUpEvent event) {
+    if (_longPressFired &&
+        _activePointer == event.pointer &&
+        widget.rippleCallbacks?.onLongPressCancel != null) {
+      widget.rippleCallbacks!.onLongPressCancel!();
+      _longPressFired = false;
+      _didCallLongPressCancelOnPointerUp = true;
+    }
+    if (_activePointer == event.pointer) {
+      _activePointer = null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,51 +79,65 @@ class _RippleContainerState extends State<RippleContainer> {
         borderRadius: widget.decoration?.borderRadius ?? BorderRadius.zero,
         child: Material(
           color: Colors.transparent,
-          child: GestureDetector(
-            onLongPressCancel: widget.rippleCallbacks?.onLongPressCancel,
-            onLongPressDown: widget.rippleCallbacks?.onLongPressDown,
-            onLongPressUp: widget.rippleCallbacks?.onLongPressUp,
-            onPanStart: widget.rippleCallbacks?.onDragStart,
-            onPanUpdate: (details) {
-              final RenderBox box = context.findRenderObject() as RenderBox;
-              _dragPosition = box.globalToLocal(details.globalPosition);
-              if (widget.rippleCallbacks?.onDragUpdate != null) {
-                widget.rippleCallbacks?.onDragUpdate!(details);
-              }
-            },
-            onPanEnd: widget.rippleCallbacks?.onDragEnd != null
-                ? (details) {
-                    if (_dragPosition != null) {
-                      final RenderBox box =
-                          context.findRenderObject() as RenderBox;
-                      final size = box.size;
-
-                      if (_dragPosition!.dx >= 0 &&
-                          _dragPosition!.dx <= size.width &&
-                          _dragPosition!.dy >= 0 &&
-                          _dragPosition!.dy <= size.height) {
-                        widget.rippleCallbacks?.onDragEnd!(details);
+          child: Listener(
+            onPointerDown: _onPointerDown,
+            onPointerUp: _onPointerUp,
+            child: GestureDetector(
+              onLongPress: () {
+                _longPressFired = true;
+                widget.rippleCallbacks?.onLongPress?.call();
+              },
+              onLongPressCancel: () {
+                if (!_didCallLongPressCancelOnPointerUp &&
+                    _longPressFired &&
+                    widget.rippleCallbacks?.onLongPressCancel != null) {
+                  widget.rippleCallbacks!.onLongPressCancel!();
+                }
+                _didCallLongPressCancelOnPointerUp = false;
+                _longPressFired = false;
+              },
+              onLongPressDown: widget.rippleCallbacks?.onLongPressDown,
+              onLongPressUp: widget.rippleCallbacks?.onLongPressUp,
+              onPanStart: widget.rippleCallbacks?.onDragStart,
+              onPanUpdate: (details) {
+                final obj = context.findRenderObject();
+                if (obj is RenderBox && obj.hasSize) {
+                  _dragPosition = obj.globalToLocal(details.globalPosition);
+                  widget.rippleCallbacks?.onDragUpdate?.call(details);
+                }
+              },
+              onPanEnd: widget.rippleCallbacks?.onDragEnd != null
+                  ? (details) {
+                      if (_dragPosition != null) {
+                        final obj = context.findRenderObject();
+                        if (obj is RenderBox &&
+                            obj.hasSize &&
+                            _dragPosition!.dx >= 0 &&
+                            _dragPosition!.dx <= obj.size.width &&
+                            _dragPosition!.dy >= 0 &&
+                            _dragPosition!.dy <= obj.size.height) {
+                          widget.rippleCallbacks!.onDragEnd!(details);
+                        }
                       }
                     }
-                  }
-                : null,
-            onPanCancel: widget.rippleCallbacks?.onDragCancel,
-            child: InkWell(
-              splashFactory: widget.decoration?.splashFactory,
-              splashColor: widget.decoration?.splashColor,
-              borderRadius: widget.decoration?.borderRadius,
-              onTap: widget.rippleCallbacks?.onTap,
-              onTapDown: widget.rippleCallbacks?.onTapDown,
-              onTapUp: widget.rippleCallbacks?.onTapUp,
-              onTapCancel: widget.rippleCallbacks?.onTapCancel,
-              onLongPress: widget.rippleCallbacks?.onLongPress,
-              onDoubleTap: widget.rippleCallbacks?.onDoubleTap,
-              child: Container(
-                width: widget.width,
-                height: widget.height,
-                padding: widget.decoration?.padding,
-                alignment: Alignment.center,
-                child: widget.child,
+                  : null,
+              onPanCancel: widget.rippleCallbacks?.onDragCancel,
+              child: InkWell(
+                splashFactory: widget.decoration?.splashFactory,
+                splashColor: widget.decoration?.splashColor,
+                borderRadius: widget.decoration?.borderRadius,
+                onTap: widget.rippleCallbacks?.onTap,
+                onTapDown: widget.rippleCallbacks?.onTapDown,
+                onTapUp: widget.rippleCallbacks?.onTapUp,
+                onTapCancel: widget.rippleCallbacks?.onTapCancel,
+                onDoubleTap: widget.rippleCallbacks?.onDoubleTap,
+                child: Container(
+                  width: widget.width,
+                  height: widget.height,
+                  padding: widget.decoration?.padding,
+                  alignment: Alignment.center,
+                  child: widget.child,
+                ),
               ),
             ),
           ),
