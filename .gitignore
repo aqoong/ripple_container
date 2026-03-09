@@ -66,3 +66,6 @@ ios/Flutter/ephemeral
 
 # Exceptions to above rules
 !ios/Flutter/Generated.xcconfig
+
+# FVM Version Cache
+.fvm/
