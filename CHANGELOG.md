@@ -43,3 +43,7 @@ const RippleContainer({
 ## 1.2.0
 - Introduced `RippleCallbacks` class to encapsulate gesture callbacks for `RippleContainer`.
 - Enhanced `RippleContainer` to support comprehensive gesture interactions via `RippleCallbacks`.
+
+## 1.2.1
+- Fix the problem that the cancellation event did not occur if the cancellation occurred after the LongPress event occurred
+- Update how to use README.md
