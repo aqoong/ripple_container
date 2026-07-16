@@ -11,7 +11,8 @@ Key Features:
 
 ## How to Use
 
-Decoration은 `ContainerDecoration`, 제스처는 `RippleCallbacks`로 전달합니다. Container처럼 `width`/`height`/`child`와 함께 사용할 수 있습니다.
+Pass styling through `ContainerDecoration` and gestures through `RippleCallbacks`.
+You can use it just like a `Container`, together with `width` / `height` / `child`.
 
 ```dart
 RippleContainer(
@@ -22,10 +23,11 @@ RippleContainer(
     margin: const EdgeInsets.all(10),
     borderRadius: BorderRadius.circular(30),
     splashColor: Colors.amber,
+    alignment: Alignment.center,
     border: const Border.fromBorderSide(BorderSide(color: Colors.grey)),
     boxShadow: [
       BoxShadow(
-        color: Colors.black.withOpacity(0.5),
+        color: Colors.black.withValues(alpha: 0.5),
         offset: const Offset(0, 2),
         blurRadius: 10,
       )
@@ -39,7 +41,19 @@ RippleContainer(
 )
 ```
 
-제스처가 필요 없으면 `rippleCallbacks`를 생략하면 됩니다. 터치 시 ripple 효과만 보이고 콜백은 호출되지 않습니다.
+If you don't need any gestures, omit `rippleCallbacks`. The ripple effect is
+still shown on touch; no callback is invoked.
+
+### Sizing & alignment
+
+* When `width` / `height` are omitted, the container hugs its `child`.
+* When a size is provided and `decoration.alignment` is left null, the child is
+  centered by default. Set `decoration.alignment` (e.g. `Alignment.centerLeft`)
+  to control placement.
+
+### Disabling
+
+Set `enabled: false` to turn off the ripple and ignore every gesture callback.
 
 ## Example
 

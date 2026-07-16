@@ -1,6 +1,6 @@
 name: ripple_container
 description: "RippleContainer provides a versatile Box widget that can apply a ripple effect in Flutter applications."
-version: 1.2.1
+version: 1.3.0
 homepage: "https://aqoong.site/"
 repository: "https://github.com/aqoong/ripple_container"
 issue_tracker: "https://github.com/aqoong/ripple_container/issues"

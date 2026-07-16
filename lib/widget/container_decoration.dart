@@ -24,12 +24,24 @@ class ContainerDecoration {
   final EdgeInsets padding;
   final EdgeInsets margin;
 
+  /// [alignment] positions the [child] within the RippleContainer.
+  ///
+  /// When null, the RippleContainer sizes itself to the child (like a plain
+  /// [Container]). If a [width] or [height] is provided on the RippleContainer
+  /// and [alignment] is left null, the child is centered by default.
+  ///
+  /// Set this explicitly (e.g. [Alignment.centerLeft]) to control child
+  /// placement, or set it to null together with an explicit size to keep the
+  /// child top-left aligned.
+  final Alignment? alignment;
+
   /// The [boxShadow] variable is used to apply a shadow outside the Container.
   final List<BoxShadow>? boxShadow;
 
   /// Defines the appearance of the splash.
   ///
-  /// Defaults to the value of the theme's splash factory: [ThemeData.splashFactory].
+  /// Defaults to the value of the theme's splash factory:
+  /// [ThemeData.splashFactory].
   ///
   /// See also:
   ///
@@ -51,16 +63,39 @@ class ContainerDecoration {
   ///  * [splashColor], the color of the highlight.
   final Color? splashColor;
 
+  /// The highlight color shown while the container is pressed.
+  ///
+  /// If null, the theme's [ThemeData.highlightColor] is used.
+  final Color? highlightColor;
+
+  /// The color shown while a pointer is hovering over the container
+  /// (web / desktop). If null, the theme's hover color is used.
+  final Color? hoverColor;
+
+  /// The color shown while the container has input focus.
+  /// If null, the theme's focus color is used.
+  final Color? focusColor;
+
+  /// The cursor shown when a pointer hovers over the container
+  /// (web / desktop). If null, [SystemMouseCursors.click] is used while the
+  /// container is enabled.
+  final MouseCursor? mouseCursor;
+
   const ContainerDecoration({
     this.backgroundColor,
     this.borderRadius = BorderRadius.zero,
     this.padding = EdgeInsets.zero,
     this.margin = EdgeInsets.zero,
+    this.alignment,
     this.backgroundBlendMode,
     this.boxShadow,
     this.border,
     this.gradient,
     this.splashFactory,
     this.splashColor,
+    this.highlightColor,
+    this.hoverColor,
+    this.focusColor,
+    this.mouseCursor,
   });
 }
