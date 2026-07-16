@@ -57,3 +57,7 @@ const RippleContainer({
 - Add: `ContainerDecoration.highlightColor`, `hoverColor`, `focusColor`, and `mouseCursor` for better web / desktop interaction.
 - Add: `RippleCallbacks.onHover` and `onFocusChange`.
 - Add: initial widget test suite covering sizing, ripple visibility, tap callbacks, drag boundaries, the enabled flag, and long-press cancel.
+
+## 1.3.1
+- Perf: the ripple now appears immediately on tap. Previously a pan (and long-press) gesture recognizer was always attached, competing with the tap recognizer in the gesture arena and delaying the splash. These recognizers are now attached only when the corresponding drag/long-press callbacks are provided.
+- Add: tests asserting the pan/long-press recognizers are attached only when the matching callbacks are provided.
