@@ -88,6 +88,23 @@ class _RippleContainerState extends State<RippleContainer> {
   @override
   Widget build(BuildContext context) {
     final decoration = widget.decoration;
+    final cb = _callbacks;
+
+    // Only attach the pan/long-press recognizers when the caller actually
+    // needs them. An idle PanGestureRecognizer in the arena competes with the
+    // InkWell tap recognizer and delays the ripple until the gesture is
+    // resolved, which makes the ripple feel sluggish for plain tap usage.
+    final hasDrag = cb != null &&
+        (cb.onDragStart != null ||
+            cb.onDragUpdate != null ||
+            cb.onDragEnd != null ||
+            cb.onDragCancel != null);
+    final hasLongPress = cb != null &&
+        (cb.onLongPress != null ||
+            cb.onLongPressDown != null ||
+            cb.onLongPressUp != null ||
+            cb.onLongPressCancel != null);
+
     return Container(
       margin: decoration?.margin,
       decoration: BoxDecoration(
@@ -106,32 +123,32 @@ class _RippleContainerState extends State<RippleContainer> {
             onPointerDown: _onPointerDown,
             onPointerUp: _onPointerUp,
             child: GestureDetector(
-              onLongPress: widget.enabled
+              onLongPress: hasLongPress
                   ? () {
                       _longPressFired = true;
                       _callbacks?.onLongPress?.call();
                     }
                   : null,
-              onLongPressCancel: widget.enabled
+              onLongPressCancel: hasLongPress
                   ? () {
                       if (!_didCallLongPressCancelOnPointerUp &&
-                          _longPressFired &&
-                          _callbacks?.onLongPressCancel != null) {
-                        _callbacks!.onLongPressCancel!();
+                          _longPressFired) {
+                        _callbacks?.onLongPressCancel?.call();
                       }
                       _didCallLongPressCancelOnPointerUp = false;
                       _longPressFired = false;
                     }
                   : null,
-              onLongPressDown: _callbacks?.onLongPressDown,
-              onLongPressUp: _callbacks?.onLongPressUp,
-              onPanStart: widget.enabled
+              onLongPressDown:
+                  hasLongPress ? _callbacks?.onLongPressDown : null,
+              onLongPressUp: hasLongPress ? _callbacks?.onLongPressUp : null,
+              onPanStart: hasDrag
                   ? (details) {
                       _dragPosition = null;
                       _callbacks?.onDragStart?.call(details);
                     }
                   : null,
-              onPanUpdate: widget.enabled
+              onPanUpdate: hasDrag
                   ? (details) {
                       final box = _contentBox;
                       if (box != null) {
@@ -141,7 +158,7 @@ class _RippleContainerState extends State<RippleContainer> {
                       _callbacks?.onDragUpdate?.call(details);
                     }
                   : null,
-              onPanEnd: _callbacks?.onDragEnd != null
+              onPanEnd: hasDrag && _callbacks?.onDragEnd != null
                   ? (details) {
                       final box = _contentBox;
                       final pos = _dragPosition;
@@ -151,15 +168,15 @@ class _RippleContainerState extends State<RippleContainer> {
                           pos.dx <= box.size.width &&
                           pos.dy >= 0 &&
                           pos.dy <= box.size.height) {
-                        _callbacks!.onDragEnd!(details);
+                        _callbacks?.onDragEnd?.call(details);
                       }
                       _dragPosition = null;
                     }
                   : null,
-              onPanCancel: _callbacks?.onDragCancel != null
+              onPanCancel: hasDrag && _callbacks?.onDragCancel != null
                   ? () {
                       _dragPosition = null;
-                      _callbacks!.onDragCancel!();
+                      _callbacks?.onDragCancel?.call();
                     }
                   : null,
               child: InkWell(

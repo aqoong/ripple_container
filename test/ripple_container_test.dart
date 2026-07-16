@@ -13,6 +13,17 @@ Widget _wrap(Widget child) => MaterialApp(
       ),
     );
 
+/// The [GestureDetector] created by RippleContainer itself (an ancestor of the
+/// InkWell), as opposed to the one InkWell builds internally.
+GestureDetector _outerGestureDetector(WidgetTester tester) {
+  return tester.widget<GestureDetector>(
+    find.ancestor(
+      of: find.byType(InkWell),
+      matching: find.byType(GestureDetector),
+    ),
+  );
+}
+
 void main() {
   group('sizing', () {
     testWidgets('wraps the child when no width/height is given',
@@ -113,6 +124,44 @@ void main() {
       await tester.tap(find.byType(RippleContainer));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
+    });
+
+    testWidgets(
+        'no pan/long-press recognizer is attached for tap-only usage '
+        '(keeps the ripple responsive)', (tester) async {
+      await tester.pumpWidget(
+        _wrap(
+          RippleContainer(
+            width: 100,
+            height: 100,
+            rippleCallbacks: RippleCallbacks(onTap: () {}),
+            child: const Text('Hi'),
+          ),
+        ),
+      );
+
+      final gd = _outerGestureDetector(tester);
+      expect(gd.onPanStart, isNull);
+      expect(gd.onPanUpdate, isNull);
+      expect(gd.onLongPress, isNull);
+    });
+
+    testWidgets('pan recognizer is attached when a drag callback is provided',
+        (tester) async {
+      await tester.pumpWidget(
+        _wrap(
+          RippleContainer(
+            width: 100,
+            height: 100,
+            rippleCallbacks: RippleCallbacks(onDragEnd: (_) {}),
+            child: const Text('Hi'),
+          ),
+        ),
+      );
+
+      final gd = _outerGestureDetector(tester);
+      expect(gd.onPanStart, isNotNull);
+      expect(gd.onPanUpdate, isNotNull);
     });
 
     testWidgets('user onTap callback still fires', (tester) async {
