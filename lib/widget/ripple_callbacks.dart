@@ -2,6 +2,7 @@
  * Copyright (c) 2025. AQoong(cooldnjsdn@gmail.com) All rights reserved.
  */
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 
 /// A container for gesture callbacks used by [RippleContainer].
@@ -40,6 +41,13 @@ class RippleCallbacks {
   /// Called when a double tap gesture is recognized.
   final GestureDoubleTapCallback? onDoubleTap;
 
+  /// Called when a pointer enters or exits the container area
+  /// (web / desktop). The bool is true on enter, false on exit.
+  final ValueChanged<bool>? onHover;
+
+  /// Called when the container gains or loses input focus.
+  final ValueChanged<bool>? onFocusChange;
+
   const RippleCallbacks({
     this.onTapDown,
     this.onTap,
@@ -54,5 +62,7 @@ class RippleCallbacks {
     this.onDragEnd,
     this.onDragCancel,
     this.onDoubleTap,
+    this.onHover,
+    this.onFocusChange,
   });
 }

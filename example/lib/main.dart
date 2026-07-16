@@ -50,9 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 // gradient: LinearGradient(colors: [Colors.red, Colors.yellow]),
                 border:
                     const Border.fromBorderSide(BorderSide(color: Colors.grey)),
+                alignment: Alignment.center,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.black.withValues(alpha: 0.5),
                     offset: const Offset(0, 2),
                     blurRadius: 10,
                   )

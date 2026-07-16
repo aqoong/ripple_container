@@ -47,3 +47,13 @@ const RippleContainer({
 ## 1.2.1
 - Fix the problem that the cancellation event did not occur if the cancellation occurred after the LongPress event occurred
 - Update how to use README.md
+
+## 1.3.0
+- Fix: the ripple effect is now shown even when no `rippleCallbacks` are provided (the internal `InkWell` was previously disabled with no callbacks, so no ripple was painted).
+- Fix: `RippleContainer` no longer expands to fill its parent when `width`/`height` are omitted. It now sizes itself to the child as documented.
+- Fix: `onDragEnd` boundary detection now uses the actual touchable content box instead of the outer (margin-inclusive) box, and the tracked drag position is reset on drag start/end/cancel to avoid stale results.
+- Add: `RippleContainer.enabled` flag to disable the ripple and all gesture callbacks.
+- Add: `ContainerDecoration.alignment` to control the child's placement. When a `width`/`height` is set and `alignment` is left null, the child is centered (previous default). When no size is set, the container hugs the child.
+- Add: `ContainerDecoration.highlightColor`, `hoverColor`, `focusColor`, and `mouseCursor` for better web / desktop interaction.
+- Add: `RippleCallbacks.onHover` and `onFocusChange`.
+- Add: initial widget test suite covering sizing, ripple visibility, tap callbacks, drag boundaries, the enabled flag, and long-press cancel.
